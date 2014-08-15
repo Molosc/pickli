@@ -10,8 +10,6 @@
 
 (function($){
 
-	var plugin = {};
-
 	var defaults = {
 
 		// GENERAL
@@ -22,6 +20,7 @@
         unselectAlign: 'center',
         interaction: 'click',
         cursor: 'pointer',
+        openInPlace: true,
 
 		// DATA
 		default: null,
@@ -31,9 +30,13 @@
         erase: false,
         data: [],
         remote: {
-            url: '',
+            url: false,
+            loader: null,
+            type: 'GET',
+            data: null,
+            crossDomain: false,
             onRemoteError: null,
-            onRemoteLoad: null
+            onRemoteSuccess: null
         },
 
         // STYLES
@@ -42,7 +45,7 @@
         unselectClass: '',
 
         // ANIMATION
-        animate: {
+        transition: {
             duration: 'normal',
             easing: 'swing',
             onAnimateStart: null,
@@ -66,8 +69,7 @@
 		// create a namespace to be used throughout the plugin
 		var pickli = {};
 		// set a reference to our slider element
-		var el = this;
-		//plugin.el = this;
+		var self = this;
 
 
 		/**
@@ -96,9 +98,9 @@
 		var setup = function(){
 
 			// container
-			el.wrap('<div></div>');
+			self.wrap('<div></div>');
 
-			pickli.div = el.parent();
+			pickli.div = self.parent();
 			pickli.div.css({
 				'white-space': 'nowrap',
 				'overflow-x': 'hidden',
@@ -113,31 +115,45 @@
 
 			// interaction
 			if (pickli.settings.cursor) {
-				el.css( 'cursor', pickli.settings.cursor);
+				self.css( 'cursor', pickli.settings.cursor);
 			}
-			if (pickli.settings.interaction) {
 
+				
+			setInteraction();
+			setResize();
+			initData();
+
+		}
+
+		var setInteraction = function() {
+			self.off();
+			if (pickli.settings.interaction) {
 				var events = pickli.settings.interaction.split(' ');
 				for (var i = events.length - 1; i >= 0; i--) {
 					events[i] = events[i]+'.pickli';
 				};
 
-				el.on(events.join(' '), 'li', function(){
+				self.on(events.join(' '), 'li', function(){
 					change($(this).index());
 				});
 			}
-
-
-			if (pickli.settings.resize) {
-				$(window).resize(function() {
-					refresh();
-				});
-			}
-			
-			initData();
-
 		}
 
+		/**
+		 * Performs all DOM and CSS modifications
+		 */
+		var setResize = function(){
+			$(window).off("resize", resizer);
+			if (pickli.settings.resize) {
+				$(window).resize(resizer);
+			}
+		}
+		/**
+		 * Performs all DOM and CSS modifications
+		 */
+		var resizer = function(){
+			refresh();
+		}
 		/**
 		 * Performs all DOM and CSS modifications
 		 */
@@ -145,19 +161,20 @@
 			
 			if (!pickli.settings.data) pickli.settings.data = [];
 
-			if ($('li', el).length > 0) {
+			if ($('li', self).length > 0) {
 				var lis = [];
-				$('li', el).each(function() {
+				$('li', self).each(function() {
 					var obj = {};
 					obj[pickli.settings.labelKey] = $(this).html();
 					obj[pickli.settings.valueKey] = $(this).attr('value');
 					lis.push(obj);
 				});
 				pickli.settings.data = $.merge(lis, pickli.settings.data);
-				el.empty();
+				self.empty();
 			}
 
-
+			
+			
 			fill();
 			
 			// data remote
@@ -165,13 +182,23 @@
 				remote();
 			}
 
-			select(pickli.settings.value);
+			
+			if (pickli.settings.openInPlace) {
+				var saveTransition = pickli.settings.transition;
+				pickli.settings.transition = false;
+				select(pickli.settings.value);
+				pickli.settings.transition = saveTransition;
+			} else {
+				select(pickli.settings.value);
+			}
+			
+			//select(pickli.settings.value);
 
 		}
 		function getData() {
 			var data = [];
-			if ($('li', el).length > 0) {
-				$('li', el).each(function() {
+			if ($('li', self).length > 0) {
+				$('li', self).each(function() {
 					var obj = {};
 					obj[pickli.settings.labelKey] = $(this).html();
 					obj[pickli.settings.valueKey] = $(this).attr('value');
@@ -182,13 +209,40 @@
 		}
 
 
-
 		/**
 		 * Performs all DOM and CSS modifications
 		 */
 		var remote = function(){
-			//if (pickli.settings.erase) el.empty();
-			
+			if (pickli.settings.remote && pickli.settings.remote.url) {
+				if (pickli.settings.remote.loader) pickli.settings.remote.loader.show();
+				$.ajax({
+					url: pickli.settings.remote.url,
+					type: pickli.settings.remote.type,
+					data: pickli.settings.remote.data,
+					crossDomain: pickli.settings.remote.crossDomain,
+					success: function(data) {
+						pickli.settings.data = data;
+						fill();
+
+						if (pickli.settings.openInPlace) {
+							var saveTransition = pickli.settings.transition;
+							pickli.settings.transition = false;
+							refresh();
+							pickli.settings.transition = saveTransition;
+						} else {
+							refresh();
+						}
+						//select(pickli.settings.value);
+
+						if (pickli.settings.remote.loader) pickli.settings.remote.loader.hide();
+						if (pickli.settings.remote.onRemoteSuccess) pickli.settings.remote.onRemoteSuccess(data); 
+					},
+					error: function(e) {
+						if (pickli.settings.remote.loader) pickli.settings.remote.loader.hide();
+						if (pickli.settings.remote.onRemoteError) pickli.settings.remote.onRemoteError(e); 
+					}
+				});    
+			}
 		}
 
 
@@ -196,20 +250,22 @@
 		 * Performs all DOM and CSS modifications
 		 */
 		var fill = function(){
-			if (pickli.settings.erase) el.empty();
+			if (pickli.settings.erase) self.empty();
 			if (pickli.settings.data) {
 				for (var i = 0; i < pickli.settings.data.length; i++) {
-					el.append('<li value="'+pickli.settings.data[i][pickli.settings.valueKey]+'">'+pickli.settings.data[i][pickli.settings.labelKey]+'</li>');
+					self.append('<li value="'+pickli.settings.data[i][pickli.settings.valueKey]+'">'+pickli.settings.data[i][pickli.settings.labelKey]+'</li>');
 				}
 			}
 		}
+
+
 
 		/**
 		 * Performs all DOM and CSS modifications
 		 */
 		var getValue = function(){
 			if (pickli.index == null) return null;
-			var target = $('li:nth-child('+(pickli.index+1)+')', el);
+			var target = $('li:nth-child('+(pickli.index+1)+')', self);
 			if (target.length > 0) return target.attr('value');
 			else return null;
 		}
@@ -218,7 +274,7 @@
 		 * Performs all DOM and CSS modifications
 		 */
 		var select = function(value){
-			var target = $('li[value="'+value+'"]', el);
+			var target = $('li[value="'+value+'"]', self);
 			if (target.length > 0) change(target.index());
 			else selectDefault();
 		}
@@ -227,7 +283,7 @@
 		 * Performs all DOM and CSS modifications
 		 */
 		var selectDefault = function(){
-			var target = $('li[value="'+pickli.settings.default+'"]', el);
+			var target = $('li[value="'+pickli.settings.default+'"]', self);
 			if (target.length > 0) change(target.index());
 			else {
 				pickli.settings.defaults = null;
@@ -243,7 +299,7 @@
 		var change = function(index){
 
 			if (index < 0) index = 0;
-			else if (index >= $('li', el).length) index = $('li', el).length - 1;
+			else if (index >= $('li', self).length) index = $('li', self).length - 1;
 
 			if (index !== pickli.index) {
 				pickli.index = index;
@@ -261,12 +317,12 @@
 
 			var targetPos = 0;
 
-			$('li', el).removeClass(pickli.settings.selectClass).addClass(pickli.settings.unselectClass);
+			$('li', self).removeClass(pickli.settings.selectClass).addClass(pickli.settings.unselectClass);
 
 			if (index != null && index >= 0) {
 
-				var li = $('li:nth-child('+(index+1)+')', el);
-				var x = li.position().left - pickli.div.position().left - (el.css('marginLeft').replace("px", ""));
+				var li = $('li:nth-child('+(index+1)+')', self);
+				var x = li.position().left - pickli.div.position().left - (self.css('marginLeft').replace("px", ""));
 
 				switch (pickli.settings.selectAlign) {
 					case 'left':
@@ -297,31 +353,31 @@
 				}
 			}
 
-			if (pickli.settings.animate) {
-				el.stop(true, false).animate(	
+			if (pickli.settings.transition) {
+				self.stop(true, false).animate(	
 					{
 						marginLeft:targetPos
 					}, 
 					{
-						duration: pickli.settings.animate.duration, 
-						easing: pickli.settings.animate.easing, 
+						duration: pickli.settings.transition.duration, 
+						easing: pickli.settings.transition.easing, 
 						start: function() {
-							if (pickli.settings.animate.onPickliAnimateStart) pickli.settings.animate.onAnimateStart();
+							if (pickli.settings.transition.onPickliAnimateStart) pickli.settings.transition.onAnimateStart();
 						}, 
 						complete: function() {
-							if (pickli.settings.animate.onPickliAnimateComplete) pickli.settings.animate.onAnimateComplete();
+							if (pickli.settings.transition.onPickliAnimateComplete) pickli.settings.transition.onAnimateComplete();
 						}
 					}
 				);
 			} else {
-				el.css({marginLeft:targetPos+'px'});
+				self.css({marginLeft:targetPos+'px'});
 			}
 		}
 
 		function fullWidth() {
 			var w = 0;
 			//console.log($('li', target).length);
-			$('li', el).each(function() {
+			$('li', self).each(function() {
 				w += $(this).outerWidth(true);
 			});
 			return w;
@@ -342,7 +398,7 @@
 		 * @param direction (string)
 		 *  - INTERNAL USE ONLY - the direction of travel ("prev" / "next")
 		 */
-		el.value = function(value){
+		self.value = function(value){
 			if (typeof value != 'undefined') select(value);
 			return getValue();
 		}
@@ -350,7 +406,7 @@
 		/**
 		 * Transitions to the next slide in the show
 		 */
-		el.index = function(index){
+		self.index = function(index){
 			if (typeof index != 'undefined') change(index);
 			return pickli.index;
 		}
@@ -358,7 +414,7 @@
 		/**
 		 * Transitions to the next slide in the show
 		 */
-		el.selectAlign = function(p){
+		self.selectAlign = function(p){
 			if (typeof p != 'undefined') {
 				pickli.settings.selectAlign = p;
 				refresh();
@@ -368,7 +424,7 @@
 		/**
 		 * Transitions to the next slide in the show
 		 */
-		el.unselectAlign = function(p){
+		self.unselectAlign = function(p){
 			if (typeof p != 'undefined') {
 				pickli.settings.unselectAlign = p;
 				refresh();
@@ -378,7 +434,7 @@
 		/**
 		 * Transitions to the next slide in the show
 		 */
-		el.default = function(p){
+		self.default = function(p){
 			if (typeof p != 'undefined') {
 				pickli.settings.default = p;
 				refresh();
@@ -388,7 +444,18 @@
 		/**
 		 * Transitions to the next slide in the show
 		 */
-		el.data = function(p){
+		self.size = function(p){
+			if (typeof p != 'undefined') {
+				pickli.settings.size = p;
+				pickli.div.css('width', pickli.settings.size);
+				refresh();
+			}
+			return pickli.settings.size;
+		}
+		/**
+		 * Transitions to the next slide in the show
+		 */
+		self.data = function(p){
 			if (typeof p != 'undefined') {
 				pickli.settings.data = p;
 				fill();
@@ -397,16 +464,132 @@
 			return getData();
 		}
 
+		/**
+		 * Transitions to the next slide in the show
+		 */
+		self.resize = function(p){
+			if (typeof p != 'undefined') {
+				pickli.settings.resize = p;
+				setResize();
+				refresh();
+			}
+			return pickli.settings.resize;
+		}
+		/**
+		 * Transitions to the next slide in the show
+		 */
+		self.interaction = function(p){
+			if (typeof p != 'undefined') {
+				pickli.settings.interaction = p;
+				setInteraction();
+			}
+			return pickli.settings.interaction;
+		}
+		/**
+		 * Transitions to the next slide in the show
+		 */
+		self.cursor = function(p){
+			if (typeof p != 'undefined') {
+				pickli.settings.cursor = p;
+				if (pickli.settings.cursor) self.css( 'cursor', pickli.settings.cursor);
+			}
+			return pickli.settings.cursor;
+		}
 
 
-
+		/**
+		 * Transitions to the next slide in the show
+		 */
+		self.wrapperClass = function(p){
+			if (typeof p != 'undefined') {
+				pickli.div.removeClass(pickli.settings.wrapperClass);
+				pickli.settings.wrapperClass = p;
+				pickli.div.addClass(pickli.settings.wrapperClass);
+				refresh();
+			}
+			return pickli.settings.wrapperClass;
+		}
+		/**
+		 * Transitions to the next slide in the show
+		 */
+		self.selectClass = function(p){
+			if (typeof p != 'undefined') {
+				$('li', self).removeClass(pickli.settings.selectClass);
+				pickli.settings.selectClass = p;
+				refresh();
+			}
+			return pickli.settings.selectClass;
+		}
+		/**
+		 * Transitions to the next slide in the show
+		 */
+		self.unselectClass = function(p){
+			if (typeof p != 'undefined') {
+				$('li', self).removeClass(pickli.settings.unselectClass);
+				pickli.settings.unselectClass = p;
+				refresh();
+			}
+			return pickli.settings.unselectClass;
+		}
+		/**
+		 * Transitions to the next slide in the show
+		 */
+		self.erase = function(p){
+			if (typeof p != 'undefined') {
+				pickli.settings.erase = p;
+			}
+			return pickli.settings.erase;
+		}
+		/**
+		 * Transitions to the next slide in the show
+		 */
+		self.valueKey = function(p){
+			if (typeof p != 'undefined') {
+				pickli.settings.valueKey = p;
+			}
+			return pickli.settings.valueKey;
+		}
+		/**
+		 * Transitions to the next slide in the show
+		 */
+		self.labelKey = function(p){
+			if (typeof p != 'undefined') {
+				pickli.settings.labelKey = p;
+			}
+			return pickli.settings.labelKey;
+		}
+		/**
+		 * Transitions to the next slide in the show
+		 */
+		self.onChange = function(p){
+			if (typeof p != 'undefined') {
+				pickli.settings.onChange = p;
+			}
+			return pickli.settings.onChange;
+		}
+		
+		self.transition = function(p){
+			if (typeof p != 'undefined') {
+				if (p && typeof p == 'object') pickli.settings.transition = $.extend({}, (pickli.settings.transition) ? pickli.settings.transition : defaults.transition, p);
+				else pickli.settings.transition = p;
+			}
+			return pickli.settings.transition;
+		}
+		self.remote = function(p){
+			if (typeof p != 'undefined') {
+				if (p && typeof p == 'object') pickli.settings.remote = $.extend({}, (pickli.settings.remote) ? pickli.settings.remote : defaults.remote, p);
+				else pickli.settings.remote = p;
+			}
+			remote();
+		}
+	
 
 
 
 		/**
 		 * Transitions to the next slide in the show
 		 */
-		el.next = function(){
+		self.next = function(){
 			if (pickli.index != null) {
 				change(pickli.index + 1);
 			}
@@ -415,7 +598,7 @@
 		/**
 		 * Transitions to the prev slide in the show
 		 */
-		el.prev = function(){
+		self.prev = function(){
 			if (pickli.index != null) {
 				change(pickli.index - 1);
 			}
@@ -424,23 +607,24 @@
 		/**
 		 * Transitions to the next slide in the show
 		 */
-		el.first = function(){
+		self.first = function(){
 			change(0);
 		}
 
 		/**
 		 * Transitions to the prev slide in the show
 		 */
-		el.last = function(){
-			change($('li', el).length - 1);
+		self.last = function(){
+			change($('li', self).length - 1);
 		}
 
 		/**
 		 * Transitions to the prev slide in the show
 		 */
-		el.jump = function(p){
+		self.jump = function(p){
 			change(pickli.index + p);
 		}
+
 
 
 		init();
