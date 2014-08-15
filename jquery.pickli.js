@@ -12,8 +12,8 @@
 
 	var defaults = {
 
-		// GENERAL
-		size:'100%',
+	// GENERAL
+	size:'100%',
         orientation: 'horizontal',
         resize:false,
         selectAlign: 'center',
@@ -22,8 +22,8 @@
         cursor: 'pointer',
         openInPlace: true,
 
-		// DATA
-		default: null,
+	// DATA
+	default: null,
         value: null,
         labelKey: 'label',
         valueKey: 'value',
@@ -173,16 +173,9 @@
 				self.empty();
 			}
 
-			
-			
 			fill();
-			
-			// data remote
-			if (pickli.settings.remote) {
-				remote();
-			}
+			remote();
 
-			
 			if (pickli.settings.openInPlace) {
 				var saveTransition = pickli.settings.transition;
 				pickli.settings.transition = false;
@@ -192,8 +185,6 @@
 				select(pickli.settings.value);
 			}
 			
-			//select(pickli.settings.value);
-
 		}
 		function getData() {
 			var data = [];
