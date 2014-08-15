@@ -1,7 +1,7 @@
 Pickli
 ======
 
-jQuery plug-in
+jQuery Plug-in
 
 
 
