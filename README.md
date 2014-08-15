@@ -1,4 +1,4 @@
-pickli
+Pickli
 ======
 
 jQuery plug-in
