@@ -262,7 +262,15 @@ slider.refresh();
 
 ## Public getter / setter
 
-Each option have a getter / setter funcionality.
+Each option have a getter / setter public function. (except for the orientation)
+
+## Remote options
+
+Comming soon...
+
+## Transition options
+
+Comming soon...
 
 
 # For the next versions
