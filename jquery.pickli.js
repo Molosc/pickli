@@ -1,5 +1,5 @@
 /**
- * Pickli v0.0.0 - Li Picker
+ * Pickli v0.0.1 - Carousel Picker for li tags
  * https://github.com/Molosc/pickli
  *
  * Copyright 2014, Molosc - http://molosc.com - https://github.com/Molosc/
@@ -15,7 +15,7 @@
 		// GENERAL
 		size:'100%',
         orientation: 'horizontal',
-        resize:false,
+        autoResize:false,
         selectAlign: 'center',
         unselectAlign: 'center',
         interaction: 'click',
@@ -28,7 +28,7 @@
         value: null,
         labelKey: 'label',
         valueKey: 'value',
-        erase: false,
+        autoErase: false,
         data: [],
         remote: {
             url: false,
@@ -54,9 +54,10 @@
         },
 
         // CALLBACKS
+        onFill: null,
         onChange: null,
 
-        // FOR THE FUTUR
+        // IN THE FUTUR
         infinite: false
 	}
 
@@ -90,6 +91,7 @@
 			pickli.settings = $.extend({}, defaults, options);
 
 			pickli.settings.wrapper = null;
+
 			if (pickli.settings.orientation == 'horizontal') {
 				pickli.settings.wrapper_whiteSpace = 'nowrap';
 				pickli.settings.wrapper_overflowX = 'hidden';
@@ -129,25 +131,20 @@
 				'padding': '0px'
 			});
 			pickli.settings.wrapper.css(pickli.settings.prop_size, pickli.settings.size);
-			//div.addClass('pickli');
 			pickli.settings.wrapper.addClass(pickli.settings.wrapperClass);
 
-
-
 			// interaction
-			if (pickli.settings.cursor) {
-				self.css( 'cursor', pickli.settings.cursor);
-			}
-
+			if (pickli.settings.cursor) self.css( 'cursor', pickli.settings.cursor);
 				
 			setInteraction();
 			setResize();
+
 			initData();
 
 		}
 
 		/**
-		 * Performs all DOM and CSS modifications
+		 * Initialize the data collection
 		 */
 		var initData = function(){
 			
@@ -165,8 +162,6 @@
 				self.empty();
 			}
 
-			
-			
 			fill();
 			remote();
 
@@ -174,22 +169,10 @@
 			else selectInPlace(pickli.settings.value);
 
 		}
-		function getData() {
-			var data = [];
-			if ($('li', self).length > 0) {
-				$('li', self).each(function() {
-					var obj = {};
-					obj[pickli.settings.labelKey] = $(this).html();
-					obj[pickli.settings.valueKey] = $(this).attr('value');
-					data.push(obj);
-				});
-			}
-			return data;
-		}
 
 
 		/**
-		 * Performs all DOM and CSS modifications
+		 * Call data collection with ajax
 		 */
 		var remote = function(){
 			if (pickli.settings.remote && pickli.settings.remote.url) {
@@ -216,33 +199,25 @@
 			}
 		}
 
-
 		/**
-		 * Performs all DOM and CSS modifications
+		 * Fill the slider with the current data collection
 		 */
 		var fill = function(){
-			if (pickli.settings.erase) self.empty();
+			if (pickli.settings.autoErase) self.empty();
 			if (pickli.settings.data) {
 				for (var i = 0; i < pickli.settings.data.length; i++) {
 					self.append('<li value="'+pickli.settings.data[i][pickli.settings.valueKey]+'">'+pickli.settings.data[i][pickli.settings.labelKey]+'</li>');
 				}
 			}
-		}
-
-
-
-		/**
-		 * Performs all DOM and CSS modifications
-		 */
-		var getValue = function(){
-			if (pickli.settings.index == null) return null;
-			var target = $('li:nth-child('+(pickli.settings.index+1)+')', self);
-			if (target.length > 0) return target.attr('value');
-			else return null;
+			if (pickli.settings.onFill) pickli.settings.onFill(pickli.settings.data); 
 		}
 
 		/**
-		 * Performs all DOM and CSS modifications
+		 * Change the selection with a new value
+		 *
+		 * @param value (string)
+		 *  - value of the selected idem
+		 *
 		 */
 		var select = function(value){
 			var target = $('li[value="'+value+'"]', self);
@@ -250,6 +225,13 @@
 			else selectDefault();
 		}
 
+		/**
+		 * Directly change the selection with a new value (without transition)
+		 *
+		 * @param value (string)
+		 *  - value of the selected idem
+		 *
+		 */
 		function selectInPlace(value) {
 			var saveTransition = pickli.settings.transition;
 			pickli.settings.transition = false;
@@ -257,6 +239,13 @@
 			refresh();
 			pickli.settings.transition = saveTransition;
 		}
+
+		/**
+		 * Directly change the selection with a new index (without transition)
+		 *
+		 * @param index (int)
+		 *  - index of the selected idem
+		 */
 		function changeInPlace(index) {
 			var saveTransition = pickli.settings.transition;
 			pickli.settings.transition = false;
@@ -264,8 +253,9 @@
 			refresh();
 			pickli.settings.transition = saveTransition;
 		}
+
 		/**
-		 * Performs all DOM and CSS modifications
+		 * Change the selection with the default value
 		 */
 		var selectDefault = function(){
 			var target = $('li[value="'+pickli.settings.default+'"]', self);
@@ -276,10 +266,11 @@
 			}
 		}
 
-
-
 		/**
-		 * Performs all DOM and CSS modifications
+		 * Change the selection with a new index
+		 *
+		 * @param index (int)
+		 *  - index of the selected idem
 		 */
 		var change = function(index){
 
@@ -294,7 +285,7 @@
 		}
 
 		/**
-		 * Performs all DOM and CSS modifications
+		 * Refresh the selection of the slider
 		 */
 		var refresh = function(){
 			
@@ -330,10 +321,10 @@
 						targetPos = 0;
 					break;
 					case 'center':
-						targetPos = parseInt(pickli.settings.wrapper[pickli.settings.prop_size]()*0.5) - parseInt(fullSize()*0.5);
+						targetPos = parseInt(pickli.settings.wrapper[pickli.settings.prop_size]()*0.5) - parseInt(getFullSize()*0.5);
 					break;
 					case 'right':
-						targetPos = pickli.settings.wrapper[pickli.settings.prop_size]() - fullSize();
+						targetPos = pickli.settings.wrapper[pickli.settings.prop_size]() - getFullSize();
 					break;
 				}
 			}
@@ -359,7 +350,47 @@
 			}
 		}
 
-		function fullSize() {
+
+		/**
+		 * Get value of the selected item
+		 *
+		 * @return value (string)
+		 *  - Value of the selected idem
+		 *
+		 */
+		var getValue = function(){
+			if (pickli.settings.index == null) return null;
+			var target = $('li:nth-child('+(pickli.settings.index+1)+')', self);
+			if (target.length > 0) return target.attr('value');
+			else return null;
+		}
+
+		/**
+		 * Get the data collection of the slider
+		 *
+		 * @return data (array)
+		 *  - List of elements (exemple:[{label:"Item 1",value:1}, {label:"Item 2",value:2}, ...])
+		 */
+		var getData = function() {
+			var data = [];
+			if ($('li', self).length > 0) {
+				$('li', self).each(function() {
+					var obj = {};
+					obj[pickli.settings.labelKey] = $(this).html();
+					obj[pickli.settings.valueKey] = $(this).attr('value');
+					data.push(obj);
+				});
+			}
+			return data;
+		}
+
+		/**
+		 * Get the size of all items
+		 *
+		 * @return size (int)
+		 *  - The total size
+		 */
+		function getFullSize() {
 			var w = 0;
 			//console.log($('li', target).length);
 			$('li', self).each(function() {
@@ -368,6 +399,9 @@
 			return w;
 		}
 
+		/**
+		 * Update slider interaction events state
+		 */
 		var setInteraction = function() {
 			self.off();
 			if (pickli.settings.interaction) {
@@ -382,34 +416,41 @@
 			}
 		}
 		/**
-		 * Performs all DOM and CSS modifications
+		 * Update window resize event state
 		 */
 		var setResize = function(){
 			$(window).off("resize", resizer);
-			if (pickli.settings.resize) {
+			if (pickli.settings.autoResize) {
 				$(window).resize(resizer);
 			}
 		}
 		/**
-		 * Performs all DOM and CSS modifications
+		 * Function called by window resize event
 		 */
 		var resizer = function(){
 			refresh();
 		}
+
+
+
+
 		/**
 		 * ===================================================================================
-		 * = PUBLIC FUNCTIONS
+		 * = PUBLIC GETTER / SETTER
 		 * ===================================================================================
 		 */
 
+
+		// DATA
+
 		/**
-		 * Performs slide transition to the specified slide
+		 * Get or set the value and select the item
 		 *
-		 * @param slideIndex (int)
-		 *  - the destination slide's index (zero-based)
+		 * @param value (string or null)
+		 *  - The new value
 		 *
-		 * @param direction (string)
-		 *  - INTERNAL USE ONLY - the direction of travel ("prev" / "next")
+		 * @return value (string or null)
+		 *  - The current value
 		 */
 		self.value = function(value){
 			if (typeof value != 'undefined') select(value);
@@ -417,7 +458,13 @@
 		}
 
 		/**
-		 * Transitions to the next slide in the show
+		 * Get or set the index and select the item
+		 *
+		 * @param index (int or null)
+		 *  - The new index
+		 *
+		 * @return index (int or null)
+		 *  - The current index
 		 */
 		self.index = function(index){
 			if (typeof index != 'undefined') change(index);
@@ -425,48 +472,64 @@
 		}
 
 		/**
-		 * Transitions to the next slide in the show
+		 * The default value
+		 *
+		 * Used when no value is selected
+		 *
+		 * @param value (string or null)
+		 *  - The new default value
+		 *
+		 * @return default (string or null)
+		 *  - The current default value
 		 */
-		self.selectAlign = function(p){
-			if (typeof p != 'undefined') {
-				pickli.settings.selectAlign = p;
-				refresh();
-			}
-			return pickli.settings.selectAlign;
-		}
-		/**
-		 * Transitions to the next slide in the show
-		 */
-		self.unselectAlign = function(p){
-			if (typeof p != 'undefined') {
-				pickli.settings.unselectAlign = p;
-				refresh();
-			}
-			return pickli.settings.unselectAlign;
-		}
-		/**
-		 * Transitions to the next slide in the show
-		 */
-		self.default = function(p){
-			if (typeof p != 'undefined') {
-				pickli.settings.default = p;
+		self.default = function(value){
+			if (typeof value != 'undefined') {
+				pickli.settings.default = value;
 				refresh();
 			}
 			return pickli.settings.default;
 		}
+
 		/**
-		 * Transitions to the next slide in the show
+		 * The key used for the value in data collection
+		 *
+		 * @param key (string)
+		 *  - The new value key
+		 *
+		 * @return key (string)
+		 *  - The current value key
 		 */
-		self.size = function(p){
-			if (typeof p != 'undefined') {
-				pickli.settings.size = p;
-				pickli.settings.wrapper.css('width', pickli.settings.size);
-				refresh();
+		self.valueKey = function(key){
+			if (typeof key != 'undefined') {
+				pickli.settings.valueKey = key;
 			}
-			return pickli.settings.size;
+			return pickli.settings.valueKey;
 		}
+
 		/**
-		 * Transitions to the next slide in the show
+		 * The key used for the label in data collection
+		 *
+		 * @param key (string)
+		 *  - The new label key
+		 *
+		 * @return key (string)
+		 *  - The current label key
+		 */
+		self.labelKey = function(key){
+			if (typeof key != 'undefined') {
+				pickli.settings.labelKey = key;
+			}
+			return pickli.settings.labelKey;
+		}
+
+		/**
+		 * Fill the slider with a collection of elements
+		 *
+		 * @param p (array)
+		 *  - List of elements (exemple:[{label:"Item 1",value:1}, {label:"Item 2",value:2}, ...])
+		 *
+		 * @return data (array)
+		 *  - The current data list
 		 */
 		self.data = function(p){
 			if (typeof p != 'undefined') {
@@ -478,40 +541,70 @@
 		}
 
 		/**
-		 * Transitions to the next slide in the show
+		 * Call a JSON collection of elements and fill the slider
+		 *
+		 * @param p (mixte)
+		 *  - URL of the servive (string)
+		 *  - Remote settings (object)
 		 */
-		self.resize = function(p){
+		self.remote = function(p){
 			if (typeof p != 'undefined') {
-				pickli.settings.resize = p;
-				setResize();
+				if (p) {
+					if (typeof p == 'string') pickli.settings.remote.url = p;
+					else if (typeof p == 'object') pickli.settings.remote = $.extend({}, (pickli.settings.remote) ? pickli.settings.remote : defaults.remote, p);
+					else pickli.settings.remote = false;
+				} else pickli.settings.remote = false;
+			}
+			remote();
+		}
+
+		/**
+		 * Empty the slider or add items when data is updated
+		 *
+		 * @param p (boolean)
+		 *  - true: Empty the list
+		 *  - false: Add items to the current list 
+		 *
+		 * @return autoErase (array)
+		 *  - The autoErase value
+		 */
+		self.autoErase = function(p){
+			if (typeof p != 'undefined') {
+				pickli.settings.autoErase = p;
+			}
+			return pickli.settings.autoErase;
+		}
+
+
+
+		// ASPECT
+
+		/**
+		 * Wrapper size
+		 *
+		 * @param p (string)
+		 *  - The new size of the wrapper (example: "100%" / "500px" / "auto" ...)
+		 *
+		 * @return size (string)
+		 *  - The current size
+		 */
+		self.size = function(p){
+			if (typeof p != 'undefined') {
+				pickli.settings.size = p;
+				pickli.settings.wrapper.css('width', pickli.settings.size);
 				refresh();
 			}
-			return pickli.settings.resize;
-		}
-		/**
-		 * Transitions to the next slide in the show
-		 */
-		self.interaction = function(p){
-			if (typeof p != 'undefined') {
-				pickli.settings.interaction = p;
-				setInteraction();
-			}
-			return pickli.settings.interaction;
-		}
-		/**
-		 * Transitions to the next slide in the show
-		 */
-		self.cursor = function(p){
-			if (typeof p != 'undefined') {
-				pickli.settings.cursor = p;
-				if (pickli.settings.cursor) self.css( 'cursor', pickli.settings.cursor);
-			}
-			return pickli.settings.cursor;
+			return pickli.settings.size;
 		}
 
-
 		/**
-		 * Transitions to the next slide in the show
+		 * Wrapper class
+		 *
+		 * @param p (string)
+		 *  - The new class name for the div wrapper
+		 *
+		 * @return wrapperClass (string)
+		 *  - The current wrapperClass
 		 */
 		self.wrapperClass = function(p){
 			if (typeof p != 'undefined') {
@@ -522,8 +615,49 @@
 			}
 			return pickli.settings.wrapperClass;
 		}
+
 		/**
-		 * Transitions to the next slide in the show
+		 * Alignment of selected item
+		 *
+		 * @param align (string)
+		 *  - Position : "left" / "center" / "right"
+		 *
+		 * @return selectAlign (string)
+		 *  - The current alignment
+		 */
+		self.selectAlign = function(align){
+			if (typeof align != 'undefined') {
+				pickli.settings.selectAlign = align;
+				refresh();
+			}
+			return pickli.settings.selectAlign;
+		}
+
+		/**
+		 * Alignment when no item is selected
+		 *
+		 * @param align (string)
+		 *  - Position : "left" / "center" / "right"
+		 *
+		 * @return unselectAlign (string)
+		 *  - The current alignment
+		 */
+		self.unselectAlign = function(p){
+			if (typeof p != 'undefined') {
+				pickli.settings.unselectAlign = p;
+				refresh();
+			}
+			return pickli.settings.unselectAlign;
+		}
+
+		/**
+		 * Class for the selected item
+		 *
+		 * @param p (string)
+		 *  - The class name
+		 *
+		 * @return selectClass (string)
+		 *  - The current selectClass name
 		 */
 		self.selectClass = function(p){
 			if (typeof p != 'undefined') {
@@ -534,7 +668,13 @@
 			return pickli.settings.selectClass;
 		}
 		/**
-		 * Transitions to the next slide in the show
+		 * Class for the unselected items
+		 *
+		 * @param p (string)
+		 *  - The class name
+		 *
+		 * @return unselectClass (string)
+		 *  - The current unselectClass name
 		 */
 		self.unselectClass = function(p){
 			if (typeof p != 'undefined') {
@@ -544,55 +684,62 @@
 			}
 			return pickli.settings.unselectClass;
 		}
+
+
+
+
 		/**
-		 * Transitions to the next slide in the show
+		 * Refresh the slider on window resize
+		 *
+		 * @param p (boolean)
+		 *  - true: Active window resize listener
+		 *  - false: Remove window resize listener
+		 *
+		 * @return autoResize (boolean)
+		 *  - The autoResize value
 		 */
-		self.erase = function(p){
+		self.autoResize = function(p){
 			if (typeof p != 'undefined') {
-				pickli.settings.erase = p;
+				pickli.settings.autoResize = p;
+				setResize();
+				refresh();
 			}
-			return pickli.settings.erase;
+			return pickli.settings.autoResize;
 		}
+
+
+
+
+		// INTERACTIVITY
+
+
 		/**
-		 * Transitions to the next slide in the show
+		 * User interaction
+		 *
+		 * @param p (string)
+		 *  - jQuery mouse / touch events (example: "click" / "mouseover" / "click touchstart")
+		 *
+		 * @return interaction (string)
+		 *  - The interaction value
 		 */
-		self.valueKey = function(p){
+		self.interaction = function(p){
 			if (typeof p != 'undefined') {
-				pickli.settings.valueKey = p;
+				pickli.settings.interaction = p;
+				setInteraction();
 			}
-			return pickli.settings.valueKey;
-		}
-		/**
-		 * Transitions to the next slide in the show
-		 */
-		self.labelKey = function(p){
-			if (typeof p != 'undefined') {
-				pickli.settings.labelKey = p;
-			}
-			return pickli.settings.labelKey;
-		}
-		/**
-		 * Transitions to the next slide in the show
-		 */
-		/**
-		 * Transitions to the next slide in the show
-		 */
-		self.loop = function(p){
-			if (typeof p != 'undefined') {
-				pickli.settings.loop = p;
-			}
-			return pickli.settings.loop;
-		}
-		/**
-		 * Transitions to the next slide in the show
-		 */
-		self.onChange = function(p){
-			if (typeof p != 'undefined') {
-				pickli.settings.onChange = p;
-			}
-			return pickli.settings.onChange;
+			return pickli.settings.interaction;
 		}
 		
+		/**
+		 * The transition used on change item selection
+		 *
+		 * @param p (mixte)
+		 *  - false: desactive animation (boolean)
+		 *  - Transition settings (object)
+		 *
+		 * @return transition (object)
+		 *  - The transition settings
+		 */
 		self.transition = function(p){
 			if (typeof p != 'undefined') {
 				if (p && typeof p == 'object') pickli.settings.transition = $.extend({}, (pickli.settings.transition) ? pickli.settings.transition : defaults.transition, p);
@@ -600,19 +747,75 @@
 			}
 			return pickli.settings.transition;
 		}
-		self.remote = function(p){
-			if (typeof p != 'undefined') {
-				if (p && typeof p == 'object') pickli.settings.remote = $.extend({}, (pickli.settings.remote) ? pickli.settings.remote : defaults.remote, p);
-				else pickli.settings.remote = p;
-			}
-			remote();
-		}
 	
+		/**
+		 * Connect limite slider
+		 *
+		 *  - true: If index < 0, goto last. If index > last, goto first
+		 *  - false: If index < 0, goto first. If index > last, goto last
+		 *
+		 * @param p (boolean)
+		 *  - The new loop value
+		 *
+		 * @return loop (boolean)
+		 *  - The loop value
+		 */
+		self.loop = function(p){
+			if (typeof p != 'undefined') {
+				pickli.settings.loop = p;
+			}
+			return pickli.settings.loop;
+		}
+
+		/**
+		 * Cursor showed on slider
+		 *
+		 * @param p (string)
+		 *  - A CSS cursor value
+		 *
+		 * @return cursor (string)
+		 *  - The cursor value
+		 */
+		self.cursor = function(p){
+			if (typeof p != 'undefined') {
+				pickli.settings.cursor = p;
+				if (pickli.settings.cursor) self.css( 'cursor', pickli.settings.cursor);
+			}
+			return pickli.settings.cursor;
+		}
+
+
+		// EVENTS
+
+		/**
+		 * onChange callback event
+		 *
+		 * - Called when the slider selection change
+		 *
+		 * @param p (function)
+		 *  - A callback function
+		 *
+		 * @return onChange (function)
+		 *  - The onChange function
+		 */
+		self.onChange = function(p){
+			if (typeof p != 'undefined') {
+				pickli.settings.onChange = p;
+			}
+			return pickli.settings.onChange;
+		}
+
 
 
 
 		/**
-		 * Transitions to the next slide in the show
+		 * ===================================================================================
+		 * = PUBLIC FUNCTIONS
+		 * ===================================================================================
+		 */
+
+		/**
+		 * Select next item
 		 */
 		self.next = function(){
 			if (pickli.settings.index != null) {
@@ -621,7 +824,7 @@
 		}
 
 		/**
-		 * Transitions to the prev slide in the show
+		 * Select previous item
 		 */
 		self.prev = function(){
 			if (pickli.settings.index != null) {
@@ -630,34 +833,38 @@
 		}
 
 		/**
-		 * Transitions to the next slide in the show
+		 * Select first item
 		 */
 		self.first = function(){
 			change(0);
 		}
 
 		/**
-		 * Transitions to the prev slide in the show
+		 * Select last item
 		 */
 		self.last = function(){
 			change($('li', self).length - 1);
 		}
 
 		/**
-		 * Transitions to the prev slide in the show
+		 * Jump n item
+		 *
+		 * @param offset (int)
+		 *  - Added (positive) or subtracted (negative) to index
 		 */
-		self.jump = function(p){
-			change(pickli.settings.index + p);
+		self.jump = function(offset){
+			change(pickli.settings.index + offset);
 		}
+
 		/**
-		 * Transitions to the prev slide in the show
+		 * Refresh the selection
 		 */
 		self.refresh = function(){
 			refresh();
 		}
 
 
-
+		// launch
 		init();
 
 		// returns the current jQuery object
