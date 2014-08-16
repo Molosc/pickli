@@ -64,6 +64,11 @@ $(document).ready(function(){
 });
 ```
 
+## Important note
+
+In horizontal mode, `<li>` must be set to  `display: inline-block;` CSS value.
+In vertical mode, `<li>` must be set to `display: block;` CSS value.
+
 
 # Configuration options
 
