@@ -4,12 +4,18 @@ Pickli
 jQuery Plug-in
 
 # Features
-- Lorem ipsum 
-- Other feature
+- Carousel Picker for list.
+- Horizontal or vertical orientation.
+- Align on left / center / right or top / medium / bottom.
+- Custom class for selected and unselected items.
+- Responsive with `onResize` event.
+- Custom data key.
+- Call data with ajax.
+- Interactivity with custom events and cursor.
+- Animated change with custom transitions.
 
-For complete documentation and examples, visit: 
+See exemples at http://molosc.github.io/pickli
 
-http://molosc.github.io/pickli
 
 Written by: R. Romain - http://molosc.com
 
@@ -99,15 +105,24 @@ options: boolean (true / false)
 ```
 
 **data** A collection of data (label / value) to fill the slider.
-Example: `[{label:"Item 1",value:1}, {label:"Item 2",value:2}, ...]`
 ```
 default: []
-options: array
+options: array ([{label:"Item 1",value:1}, {label:"Item 2",value:2}, ...])
 ```
 
+**remote** Options for ajax data load. (See the remote configuration options)
+```
+default: Remote options
+options: Remote options
+```
 
+## Aspect
 
-
+**size** If `orientation == 'horizontal'`, size will affect `width` wrapper property. If `orientation == 'vertical'`, size will affect `height` wrapper property.
+```
+default: '100%'
+options: string (width or height css value)
+```
 
 
 
