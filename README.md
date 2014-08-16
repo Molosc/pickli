@@ -216,6 +216,18 @@ arguments:
   data: current data collection (array)
 ```
 
+## Remote options
+
+Coming soon...
+
+## Transition options
+
+Coming soon...
+
+## Public Getter / Setter methods
+
+Each option have a getter / setter public function. (except for the orientation)
+
 ## Public methods
 
 **next** Select next item. Do nothing if there is not item selected.
@@ -259,18 +271,6 @@ example:
 slider = $('#target').pickli();
 slider.refresh();
 ```
-
-## Public getter / setter
-
-Each option have a getter / setter public function. (except for the orientation)
-
-## Remote options
-
-Comming soon...
-
-## Transition options
-
-Comming soon...
 
 
 # For the next versions
