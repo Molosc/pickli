@@ -34,8 +34,9 @@ Let's get on with it!
 First and most important, the jQuery library needs to be included. Next, download the package from this site and link the Pickli Javascript file.
 
 ```
-<!-- jQuery library (served from Google) -->
+<!-- jQuery library -->
 <script src="http://code.jquery.com/jquery.min.js"></script>
+
 <!-- Pickli Javascript file -->
 <script src="jquery.pickli.min.js"></script>
 ```
