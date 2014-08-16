@@ -1,5 +1,5 @@
 /**
- * Pickli v0.0.1 - Carousel Picker for li tags
+ * Pickli v0.0.2 - Carousel Picker for li tags
  * https://github.com/Molosc/pickli
  *
  * Copyright 2014, Molosc - http://molosc.com - https://github.com/Molosc/
@@ -12,15 +12,6 @@
 
 	var defaults = {
 
-		// GENERAL
-		size:'100%',
-        orientation: 'horizontal',
-        autoResize:false,
-        selectAlign: 'center',
-        unselectAlign: 'center',
-        interaction: 'click',
-        cursor: 'pointer',
-        loop: false,
 
 		// DATA
 		default: null,
@@ -41,9 +32,19 @@
         },
 
         // STYLES
+		size:'100%',
+        orientation: 'horizontal',
         wrapperClass: 'pickli',
+        selectAlign: 'center',
+        unselectAlign: 'center',
         selectClass: 'active',
         unselectClass: '',
+        autoResize:false,
+
+		// INTERACTIVITY
+        interaction: 'click',
+        cursor: 'pointer',
+        loop: false,
 
         // ANIMATION
         transition: {
@@ -803,6 +804,24 @@
 				pickli.settings.onChange = p;
 			}
 			return pickli.settings.onChange;
+		}
+
+		/**
+		 * onFill callback event
+		 *
+		 * - Called when the data collection change
+		 *
+		 * @param p (function)
+		 *  - A callback function
+		 *
+		 * @return onFill (function)
+		 *  - The onFill function
+		 */
+		self.onFill = function(p){
+			if (typeof p != 'undefined') {
+				pickli.settings.onFill = p;
+			}
+			return pickli.settings.onFill;
 		}
 
 
