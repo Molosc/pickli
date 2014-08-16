@@ -189,8 +189,8 @@ options: string (A CSS cursor value)
 
 **loop** If `true`, clicking "Next" while on the last item will transition to the first item and vice-versa.
 ```
-default: 'pointer'
-options: string (A CSS cursor value)
+default: false
+options: boolean (true / false)
 ```
 
 ## Callbacks
