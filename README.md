@@ -49,15 +49,30 @@ Create a <ul> element, with a <li> for each item. An item can contain any HTML c
 
 ## Step 3: Call the Pickli
 
-Call .pickli() on <ul>. Note that the call must be made inside of a $(document).ready() call, or the plugin will not work!
+Call .pickli() on target <ul>. Note that the call must be made inside of a $(document).ready() call, or the plugin will not work!
 
+```
 $(document).ready(function(){
-  $('.bxslider').bxSlider();
+  $('ul').pickli();
 });
+```
 
 
+# Configuration options
 
+## Data
 
+**default** The default selected value
+```
+default: null
+options: string
+```
+
+**index** The selected index
+```
+default: null
+options: integer
+```
 
 
 
