@@ -64,10 +64,10 @@ $(document).ready(function(){
 });
 ```
 
-## Important note
+## Important note:
 
-- In *horizontal* mode, `<li>` must be set to  `display: inline-block;` CSS value.
-- In *vertical* mode, `<li>` must be set to `display: block;` CSS value.
+- On **horizontal** orientation, `<li>` must take  `display: inline-block;` CSS value.
+- On **vertical** orientation, `<li>` must take `display: block;` CSS value.
 
 
 # Configuration options
