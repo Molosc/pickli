@@ -216,8 +216,6 @@ arguments:
   data: current data collection (array)
 ```
 
-## Public getter / setter
-
 ## Public methods
 
 **next** Select next item. Do nothing if there is not item selected.
@@ -261,6 +259,10 @@ example:
 slider = $('#target').pickli();
 slider.refresh();
 ```
+
+## Public getter / setter
+
+Each option have a getter / setter funcionality.
 
 
 # For the next versions
