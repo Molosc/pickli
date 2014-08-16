@@ -131,13 +131,13 @@ default: '100%'
 options: string (width or height css value)
 ```
 
-**selectAlign** Alignment of selected item. If `orientation == 'vertical'`, use `'left'` for top, `'center'` for medium and `'right'` for bottom.
+**selectAlign** Alignment of selected item. If `orientation == 'vertical'`, use `'left'` for top, `'center'` for middle and `'right'` for bottom.
 ```
 default: 'center'
 options: string ('left' / 'center' / 'right')
 ```
 
-**unselectAlign** Alignment when no item is selected. If `orientation == 'vertical'`, use `'left'` for top, `'center'` for medium and `'right'` for bottom.
+**unselectAlign** Alignment when no item is selected. If `orientation == 'vertical'`, use `'left'` for top, `'center'` for middle and `'right'` for bottom.
 ```
 default: 'center'
 options: string ('left' / 'center' / 'right')
