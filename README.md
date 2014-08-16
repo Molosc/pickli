@@ -36,7 +36,7 @@ First and most important, the jQuery library needs to be included. Next, downloa
 
 ## Step 2: Create HTML markup
 
-Create a <ul> element, with a <li> for each item. An item can contain any HTML content and need a value attribute.
+Create a `<ul>` element, with a `<li>` for each item. An item can contain any HTML content and need a value attribute.
 
 ```
 <ul>
@@ -49,7 +49,7 @@ Create a <ul> element, with a <li> for each item. An item can contain any HTML c
 
 ## Step 3: Call the Pickli
 
-Call .pickli() on target <ul>. Note that the call must be made inside of a $(document).ready() call, or the plugin will not work!
+Call .pickli() on target `<ul>`. Note that the call must be made inside of a `$(document).ready()` call, or the plugin will not work!
 
 ```
 $(document).ready(function(){
@@ -62,16 +62,47 @@ $(document).ready(function(){
 
 ## Data
 
-**default** The default selected value
+**default** The default selected value.
 ```
 default: null
 options: string
 ```
 
-**index** The selected index
+**index** The selected index.
+```
+default: -1
+options: integer
+```
+
+**value** The selected value.
 ```
 default: null
-options: integer
+options: string
+```
+
+**labelKey** The key used for the label in data collection.
+```
+default: 'label'
+options: string
+```
+
+**valueKey** The key used for the value in data collection.
+```
+default: 'value'
+options: string
+```
+
+**autoErase** If `true`, empty the slider when data is updated. If `false`, merge data with current collection.
+```
+default: false
+options: boolean (true / false)
+```
+
+**data** A collection of data (label / value) to fill the slider.
+Example: `[{label:"Item 1",value:1}, {label:"Item 2",value:2}, ...]`
+```
+default: []
+options: array
 ```
 
 
