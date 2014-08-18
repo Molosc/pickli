@@ -59,4 +59,6 @@ Pickli Styles
   }
   .vertical {
     width:100px;
+    text-align:'center';
+    overflow:'hidden';
   }
