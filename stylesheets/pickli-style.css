@@ -58,7 +58,8 @@ Pickli Styles
   	text-align: center;
   }
   .vertical {
-    width:100px;
+    width:80px;
     text-align:'center';
     overflow:'hidden';
+    
   }
