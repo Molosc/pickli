@@ -45,12 +45,18 @@
         <p>By default, Pickli is displayed horizontaly with a width of 100%.</p>
         
         <ul id="default">
-            <ul>
-              <li value="1">Item 1</li>
-              <li value="2">Item 2</li>
-              <li value="3">Item 3</li>
-              <li value="4">Item 4</li>
-            </ul>
+          <li value="1">Item 1</li>
+          <li value="2">Item 2</li>
+          <li value="3">Item 3</li>
+          <li value="4">Item 4</li>
+          <li value="5">Item 5</li>
+          <li value="6">Item 6</li>
+          <li value="7">Item 7</li>
+          <li value="8">Item 8</li>
+          <li value="9">Item 9</li>
+          <li value="10">Item 10</li>
+          <li value="11">Item 11</li>
+          <li value="12">Item 12</li>
         </ul>
         
         <h6>JS</h6>
@@ -60,7 +66,38 @@
         
         <br><br>
         
-        <h4>Tab selector</h4>
+        
+        <h4>Data Setter and Remote Access</h4>
+        
+        <p>Pickli can be filled dynamicaly with data option or method, and with a remote access.</p>
+        
+        <ul id="remote">
+        </ul>
+        
+        <h6>JS</h6>
+        <pre>
+          $('#remote').pickli();
+        </pre>
+        
+        <br><br>
+        <h4>Orientation</h4>
+        
+        <p>You can use Pickli verticaly so. Just set the orientacion option to <code>vertical</code></p>
+        
+        <ul id="vertical">
+        </ul>
+        
+        <h6>JS</h6>
+        <pre>
+          $('#vertical').pickli({
+            orientation:'vertical',
+            data: years
+          });
+        </pre>
+        
+        <br><br>
+        
+        <h4>Tab</h4>
         
         <p>
           You can used Pickli as a tab! It's very simple.<br>
@@ -135,12 +172,21 @@
     </div>
     
     <script type="text/javascript">
+    
       $('#default').pickli();
-    </script>
 
 
+
+      var hours = [];
+      for (var i = 0 ; i < 24 ; i++) {
+        hours.push({label:i+':00', value:i});
+      }
+
+      $('#vertical').pickli({
+        orientation:'vertical',
+        data: hours
+      });
       
-    <script type="text/javascript">
       var tab_cont = $('#tab_cont').pickli({
           default:'home',
           resize: true,
