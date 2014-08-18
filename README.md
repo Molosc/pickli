@@ -329,6 +329,7 @@ options: function(){ // your code here }
 ```
 default: null
 options: function(data){ // your code here }
+```
 
 ## Public Getter / Setter methods
 
