@@ -311,10 +311,10 @@ default: 'normal'
 options: integer or string ('slow' / 'normal' / 'fast')
 ```
 
-**easing** A string indicating which easing function to use for the transition. (see jQuery.animate documentation)
+**easing** A string indicating which easing function to use for the transition. (see jQuery.animate documentation or http://api.jqueryui.com/easings/ for the list of easing)
 ```
-default: 'normal'
-options: integer or string ('slow' / 'normal' / 'fast')
+default: 'swing'
+options: string ('linear' / 'swing' / 'easeInQuad' / 'easeOutCubic' / 'easeInOutQuart' / ...)
 ```
 
 ### Callbacks
