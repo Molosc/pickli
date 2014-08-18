@@ -3,6 +3,11 @@
 Pickli Styles
 *******************************************************************************/
 
+  .right {
+    float: right;
+  }
+
+
   li {
     padding:5px;
     margin:0px;
@@ -64,6 +69,8 @@ Pickli Styles
     overflow:'hidden';
     display: inline-block;
   }
-  .clock li {
-    text-align:'center';
+
+  .menu {
+    border: solid 1px black;
+    height:32px;
   }
