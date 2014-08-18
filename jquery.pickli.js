@@ -102,6 +102,7 @@
 				pickli.settings.prop_size = 'width';
 				pickli.settings.prop_cliente_size = 'clientWidth';
 				pickli.settings.prop_outer_size = 'outerWidth';
+				pickli.settings.display_prop = 'inline-block';
 			} else if (pickli.settings.orientation == 'vertical') {
 				pickli.settings.wrapper_whiteSpace = 'normal';
 				pickli.settings.wrapper_overflowX = 'auto';
@@ -110,6 +111,7 @@
 				pickli.settings.prop_size = 'height';
 				pickli.settings.prop_cliente_size = 'clientHeight';
 				pickli.settings.prop_outer_size = 'outerHeight';
+				pickli.settings.display_prop = 'block';
 			}
 
 			// perform all DOM / CSS modifications
@@ -209,7 +211,7 @@
 			if (pickli.settings.autoErase) self.empty();
 			if (pickli.settings.data) {
 				for (var i = 0; i < pickli.settings.data.length; i++) {
-					self.append('<li value="'+pickli.settings.data[i][pickli.settings.valueKey]+'">'+pickli.settings.data[i][pickli.settings.labelKey]+'</li>');
+					self.append('<li value="'+pickli.settings.data[i][pickli.settings.valueKey]+'" style="display:'+pickli.settings.display_prop+';">'+pickli.settings.data[i][pickli.settings.labelKey]+'</li>');
 				}
 			}
 			if (pickli.settings.onFill) pickli.settings.onFill(pickli.settings.data); 
