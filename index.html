@@ -37,12 +37,14 @@
     <!-- MAIN CONTENT -->
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
-        <h3>Why can I use the Pickli plug-in ?</h3>
-        <p>The Pickli is for display list in form of carousel, y provide user interaction for select elements in the list.</p>
+        <h3>How can I use the Pickli plug-in ?</h3>
+        <p>The Pickli display list as a carousel, and provide user interaction for select elements in the list.</p>
         
         <h4>Default</h4>
         
-        <ul class="pickli" id="default">
+        <p>By default, Pickli is displayed horizontaly with a width of 100%.</p>
+        
+        <ul id="default">
             <ul>
               <li value="1">Item 1</li>
               <li value="2">Item 2</li>
@@ -50,6 +52,10 @@
               <li value="4">Item 4</li>
             </ul>
         </ul>
+        
+        <code>
+          $('#default').pickli();
+        </code>
       </section>
     </div>
 
