@@ -34,10 +34,10 @@ First and most important, the jQuery library needs to be included. Next, downloa
 
 ```js
 <!-- jQuery library -->
-<script src="http://code.jquery.com/jquery.min.js"></script>
+<script src="http://code.jquery.com/jquery.min.js" />
 
 <!-- Pickli Javascript file -->
-<script src="jquery.pickli.min.js"></script>
+<script src="jquery.pickli.min.js" />
 ```
 
 ## Step 2: Create HTML markup
@@ -57,7 +57,7 @@ Create a `<ul>` element, with a `<li>` for each item. An item can contain any HT
 
 Call .pickli() on target `<ul>`. Note that the call must be made inside of a `$(document).ready()` call, or the plugin will not work!
 
-```javascript
+```js
 $(document).ready(function(){
   $('ul').pickli();
 });
@@ -222,7 +222,7 @@ Used for call a json data file or service with ajax.
 ### How use it ?
 
 You can load data when you initialize the slider:
-```
+```js
 slider = $('#target').pickli({
   remote: {
     url:'http://...',
@@ -231,7 +231,7 @@ slider = $('#target').pickli({
 });
 ```
 Or latter with the public method:
-```
+```js
 slider = $('#target').pickli();
 slider.remote('http://...');
 // or
