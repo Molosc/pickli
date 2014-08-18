@@ -23,12 +23,13 @@
         data: [],
         remote: {
             url: false,
-            loader: null,
             type: 'GET',
             data: null,
+            loader: null,
             crossDomain: false,
-            onRemoteError: null,
+            onRemoteStart: null,,
             onRemoteSuccess: null
+            onRemoteError: null
         },
 
         // STYLES
@@ -50,8 +51,8 @@
         transition: {
             duration: 'normal',
             easing: 'swing',
-            onAnimateStart: null,
-            onAnimateComplete: null
+            onTransitionStart: null,
+            onTransitionComplete: null
         },
 
         // CALLBACKS
@@ -178,6 +179,7 @@
 		var remote = function(){
 			if (pickli.settings.remote && pickli.settings.remote.url) {
 				if (pickli.settings.remote.loader) pickli.settings.remote.loader.show();
+				if (pickli.settings.remote.onRemoteError) pickli.settings.remote.onRemoteStart(); 
 				$.ajax({
 					url: pickli.settings.remote.url,
 					type: pickli.settings.remote.type,
@@ -339,10 +341,10 @@
 						duration: pickli.settings.transition.duration, 
 						easing: pickli.settings.transition.easing, 
 						start: function() {
-							if (pickli.settings.transition.onPickliAnimateStart) pickli.settings.transition.onAnimateStart();
+							if (pickli.settings.transition.onPickliAnimateStart) pickli.settings.transition.onTransitionStart();
 						}, 
 						complete: function() {
-							if (pickli.settings.transition.onPickliAnimateComplete) pickli.settings.transition.onAnimateComplete();
+							if (pickli.settings.transition.onPickliAnimateComplete) pickli.settings.transition.onTransitionComplete();
 						}
 					}
 				);
