@@ -54,6 +54,7 @@ Pickli Styles
   	border-bottom: solid 1px black;
   }
   .cont {
+    white-space: normal;
   	width: 350px;
   	text-align: center;
   }
