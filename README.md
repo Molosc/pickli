@@ -245,11 +245,90 @@ slider.remote({
 
 ### Options
 
+**url** The url used for load JSON data.
+```
+default: ''
+options: string
+```
 
+**type** The type of request to make
+```
+default: 'GET'
+options: string ('POST' / 'GET')
+```
+
+**data** Data to be sent to the server. (see the `jQuery.ajax()` documentation)
+```
+default: null
+options: string or object or array
+```
+
+**crooDomsin** If you wish to force a crossDomain request on the same domain.
+```
+default: false
+options: boolean
+```
+
+**loader** A jQuery object witch will be occulted or visible when data are loaded. `loader.show()` when dispatch `onRemoteStart`, `loader.hide()` when dispatch `onRemoteSuccess` or `onRemoteError`.
+```
+default: null
+options: jQuery object
+```
+
+### Callbacks
+
+**onRemoteStart** Executes immediately before the data ajax call.
+```
+default: null
+options: function(){ // your code here }
+```
+
+**onRemoteSuccess** Executes on jQuery ajax success event.
+```
+default: null
+options: function(data){ // your code here }
+arguments:
+  data: loaded data collection (array)
+```
+
+**onRemoteError** Executes on jQuery ajax error event.
+```
+default: null
+options: function(data){ // your code here }
+arguments:
+  e: error (object)
+```
 
 ## Transition options
 
-Coming soon...
+If you set the transition to `false`, it will desactivate the animation.
+
+### Options:
+
+**duration** A string or number determining how long the animation will run. (see jQuery.animate documentation)
+```
+default: 'normal'
+options: integer or string ('slow' / 'normal' / 'fast')
+```
+
+**easing** A string indicating which easing function to use for the transition. (see jQuery.animate documentation)
+```
+default: 'normal'
+options: integer or string ('slow' / 'normal' / 'fast')
+```
+
+### Callbacks
+
+**onTransitionStart** Executes on jQuery animate start event.
+```
+default: null
+options: function(){ // your code here }
+```
+
+**onTransitionComplete** Executes on jQuery animate complete event.
+```
+default: null
+options: function(data){ // your code here }
 
 ## Public Getter / Setter methods
 
@@ -304,7 +383,6 @@ slider.refresh();
 
 - Add Getter / Setter for the orientation mode
 - Add options by data tag attributes
-- Infinite mode
 
 
 # Changelog
