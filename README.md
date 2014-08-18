@@ -218,9 +218,9 @@ arguments:
 
 ## Remote options
 
-### How use it ?
+Used for call a json data file or service with ajax.
 
-Used for call with ajax a json data file or service.
+### How use it ?
 
 You can load data when you initialize the slider:
 ```
