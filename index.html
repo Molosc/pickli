@@ -159,29 +159,36 @@ var clock = setInterval(function() {
         
         <div class="right">
           <a href="#" id="firsttab">&laquo;</a>&nbsp;
-          <a href="#" id="prevtab">&lt;</a>&nbsp;
-          <a href="#" id="nexttab">&gt;</a>&nbsp;
+          <a href="#" id="prevtab">{</a>&nbsp;
+          <a href="#" id="nexttab">}</a>&nbsp;
           <a href="#" id="lasttab">&raquo;</a>&nbsp;
         </div>
         <ul id="tab">
             <li value="home">HOME</li>
             <li value="about">ABOUT</li>
+            <li value="work">WORK</li>
             <li value="contact">CONTACT</li>
         </ul>
         <ul id="tab_cont">
-            <li value="home" class="tab_cont_li">
+            <li value="home">
                 <div class='cont'>
                     <h2>HOME</h2>
                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla at euismod neque. Nulla et ultrices dolor. Duis elementum eu quam tincidunt molestie. Maecenas ut nisl lectus. Nullam posuere auctor quam eget egestas.</p>
                 </div>
             </li>
-            <li value="about" class="tab_cont_li">
+            <li value="about">
                 <div class='cont'>
                     <h2>ABOUT</h2>
                     <p>Nullam posuere auctor quam eget egestas. Vestibulum nulla lectus, aliquam ac tincidunt sit amet, auctor id ipsum. Etiam at mattis arcu, eget pellentesque lectus. Aenean velit eros.</p>
                 </div>
             </li>
-            <li value="contact" class="tab_cont_li">
+            <li value="work">
+                <div class='cont'>
+                    <h2>WORK</h2>
+                    <p>Duis elementum eu quam tincidunt molestie. Maecenas ut nisl lectus. Nullam posuere auctor quam eget egestas. Nullam posuere auctor quam eget egestas. Vestibulum nulla lectus, aliquam ac tincidunt sit amet, auctor id ipsum. Etiam at mattis arcu, eget pellentesque lectus. Aenean velit eros.</p>
+                </div>
+            </li>
+            <li value="contact">
                 <div class='cont'>
                     <h2>CONTACT</h2>
                     <p>Nullam posuere auctor quam eget egestas. Vestibulum nulla lectus, aliquam ac tincidunt sit amet, auctor id ipsum. Etiam at mattis arcu, eget pellentesque lectus. Aenean velit eros.</p>
@@ -189,7 +196,72 @@ var clock = setInterval(function() {
             </li>
         </ul>
         
-        
+     
+        <h6>HTML</h6>   
+<pre>
+&lt;ul id="tab"&gt;
+    &lt;li value="home"&gt;HOME&lt;/li&gt;
+    &lt;li value="about"&gt;ABOUT&lt;/li&gt;
+    &lt;li value="contact"&gt;CONTACT&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul id="tab_cont"&gt;
+    &lt;li value="home"&gt;
+        &lt;div class='cont'&gt;
+            &lt;h2&gt;HOME&lt;/h2&gt;
+            &lt;p&gt;Lorem ipsum dolor...&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/li&gt;
+    &lt;li value="about"&gt;
+        &lt;div class='cont'&gt;
+            &lt;h2&gt;ABOUT&lt;/h2&gt;
+            &lt;p&gt;Nullam posuere auctor...&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/li&gt;
+    &lt;li value="contact"&gt;
+        &lt;div class='cont'&gt;
+            &lt;h2&gt;CONTACT&lt;/h2&gt;
+            &lt;p&gt;Nullam posuere...&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/li&gt;
+&lt;/ul&gt;</pre>
+
+
+        <h6>CSS</h6>
+        <pre>
+li.tab_menu {
+  background-color: none;
+  color: grey;
+
+  -webkit-transition: color 0.5s ease-in-out;/* transition pour Chrome et Safari */
+    -moz-transition: color 0.5s ease-in-out;/* transition pour Firefox */
+    -o-transition: color 0.5s ease-in-out;/* transition pour Opéra */
+    transition: color 0.5s ease-in-out; /* all */
+
+  -webkit-transition: background-color 0.5s ease-in-out;/* transition pour Chrome et Safari */
+    -moz-transition: background-color 0.5s ease-in-out;/* transition pour Firefox */
+    -o-transition: background-color 0.5s ease-in-out;/* transition pour Opéra */
+    transition: background-color 0.5s ease-in-out; /* all */
+}
+li.tab_menu_cur {
+  background-color: black;
+  color: white;
+}
+li.tab_page {
+  opacity: 0.2;
+  -webkit-transition: opacity 0.5s ease-in-out;/* transition pour Chrome et Safari */
+    -moz-transition: opacity 0.5s ease-in-out;/* transition pour Firefox */
+    -o-transition: opacity 0.5s ease-in-out;/* transition pour Opéra */
+    transition: opacity 0.5s ease-in-out; /* all */
+}
+li.tab_page_cur {
+  opacity: 1;
+}
+.cont {
+  white-space: normal;
+  width: 350px;
+  text-align: center;
+}</pre>
+
         <p>
           We need use 2 Pickli and join them with <code>onChange</code> event.
         </p>
@@ -220,6 +292,15 @@ var tab = $('#tab').pickli({
         <p>
           Navigation control could be configured like this:
         </p>
+
+        <h6>HTML</h6>
+        <pre>
+&lt;a href="#" id="firsttab"&gt;&laquo;&lt;/a&gt;&nbsp;
+&lt;a href="#" id="prevtab"&gt;{&lt;/a&gt;&nbsp;
+&lt;a href="#" id="nexttab"&gt;}&lt;/a&gt;&nbsp;
+&lt;a href="#" id="lasttab"&gt;&raquo;&lt;/a&gt;</pre>
+
+        <h6>JS</h6>
         <pre>
 $('#firsttab').on('click', function() {
     tab.first();
@@ -244,7 +325,7 @@ $('#prevtab').on('click', function() {
       <hr>
       <h4>Contact</h4>
 
-      <p>Bugs, suggests and comments on <a href="https://github.com/Molosc/pickli">github project</a>.</p>
+      <p>Bugs, suggests and comments on <a href="https://github.com/Molosc/pickli">GitHub Pickli Project</a>.</p>
 
 
       <h4>Licence</h4>
