@@ -32,7 +32,7 @@ Let's get on with it!
 
 First and most important, the jQuery library needs to be included. Next, download the package from this site and link the Pickli Javascript file.
 
-```
+```js
 <!-- jQuery library -->
 <script src="http://code.jquery.com/jquery.min.js"></script>
 
@@ -44,7 +44,7 @@ First and most important, the jQuery library needs to be included. Next, downloa
 
 Create a `<ul>` element, with a `<li>` for each item. An item can contain any HTML content and need a value attribute.
 
-```
+```html
 <ul>
   <li value="1">Item 1</li>
   <li value="2">Item 2</li>
@@ -57,7 +57,7 @@ Create a `<ul>` element, with a `<li>` for each item. An item can contain any HT
 
 Call .pickli() on target `<ul>`. Note that the call must be made inside of a `$(document).ready()` call, or the plugin will not work!
 
-```
+```javascript
 $(document).ready(function(){
   $('ul').pickli();
 });
