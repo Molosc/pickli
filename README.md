@@ -232,7 +232,6 @@ slider = $('#target').pickli({
 ```
 Or latter with the public method:
 ```js
-slider = $('#target').pickli();
 slider.remote('http://...');
 // or
 slider.remote({
