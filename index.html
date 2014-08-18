@@ -226,7 +226,13 @@
         wrapperClass: 'vertical'
       });
       
-      
+      var clock = setInterval(function() {
+        var d = new Date();
+        hour.value(d.getHours());
+        min.value(d.getMinutes());
+        sec.value(d.getSeconds());
+        console.log(d.getSeconds());
+      }, 1000);
       
       
       
