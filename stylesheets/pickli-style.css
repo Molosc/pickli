@@ -59,7 +59,9 @@ Pickli Styles
   }
   .clock {
     width:80px;
-    text-align:'center';
     overflow:'hidden';
     display: inline-block;
+  }
+  .clock li {
+    text-align:'center';
   }
