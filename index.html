@@ -15,6 +15,7 @@
     
     <!-- Pickli Javascript file -->
     <script src="javascripts/jquery.pickli.min.js"></script>
+    <script src="javascripts/main.js"></script>
 
   </head>
 
@@ -38,78 +39,130 @@
     <!-- MAIN CONTENT -->
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
-        <h3>What can I do with Pickli</h3>
-        <p>Here a list of concret applications of the plug-in</p>
+        <h4>What can I do with Pickli</h4>
+        <p>Here a list of concret examles of the plug-in</p>
         
-        <h4>A simple menu</h4>
+        <h3>A simple menu</h3>
         
-        <p>By default, Pickli is displayed horizontaly, with a size of 100%, aligned on center and with an <code>active</code> class for the selected item.</p>
-        
-        <ul id="default">
-          <li value="1">Item 1</li>
-          <li value="2">Item 2</li>
-          <li value="3">Item 3</li>
-          <li value="4">Item 4</li>
-          <li value="5">Item 5</li>
-          <li value="6">Item 6</li>
-          <li value="7">Item 7</li>
-          <li value="8">Item 8</li>
-          <li value="9">Item 9</li>
-          <li value="10">Item 10</li>
-        </ul>
-        
-        <h6>CSS</h6>
-        <pre>
-          li.active {
-            text-decoration:underline;
-          }
-        </pre>
-        
+        <p>By default, Pickli is displayed horizontaly, with a size of <code>100%</code>, aligned on center and with an <code>active</code> class for the selected item.</p>
+        <div class="menu">
+          <ul id="default">
+            <li value="1">Item 1</li>
+            <li value="2">Item 2</li>
+            <li value="3">Item 3</li>
+            <li value="4">Item 4</li>
+            <li value="5">Item 5</li>
+            <li value="6">Item 6</li>
+            <li value="7">Item 7</li>
+            <li value="8">Item 8</li>
+            <li value="9">Item 9</li>
+            <li value="10">Item 10</li>
+          </ul>
+        </div>
+
         <h6>HTML</h6>
         <pre>
-          Coming soon...
-        </pre>
+&lt;ul id="default"&gt;
+  &lt;li value="1"&gt;Item 1&lt;/li&gt;
+  &lt;li value="2"&gt;Item 2&lt;/li&gt;
+  &lt;li value="3"&gt;...&lt;/li&gt;
+&lt;/ul&gt;</pre>
+
+        <h6>CSS</h6>
+        <pre>
+li.active {
+  font-weight:700;
+}</pre>
         
         <h6>JS</h6>
         <pre>
-          $('#default').pickli();
-        </pre>
+$('#default').pickli();</pre>
         
         <br><br>
         
+        <h3>A clock on 2 tics</h3>
         
-        <h4>Data Setter and Remote Access</h4>
+        <p>You can easy use Pickli as an realtime clock</p>
         
-        <p>Pickli can be filled dynamicaly with data option or method, and with a remote access.</p>
-        
-        <ul id="remote">
-        </ul>
+        <ul id="hour"></ul><ul id="min"></ul><ul id="sec"></ul>
+
+
+        <h6>HTML</h6>
+        <pre>
+&lt;ul id="hour"&gt;&lt;/ul&gt;
+&lt;ul id="min"&gt;&lt;/ul&gt;
+&lt;ul id="sec"&gt;&lt;/ul&gt;</pre>
+
+        <h6>CSS</h6>
+        <pre>
+.clock {
+  width:50px;
+  overflow:'hidden';
+  display: inline-block;
+}</pre>
         
         <h6>JS</h6>
         <pre>
-          $('#remote').pickli();
-        </pre>
-        
+var hours = [];
+for (var i = 0 ; i < 24 ; i++) {
+  hours.push({value:i});
+}
+var mins = [];
+for (var i = 0 ; i < 60 ; i++) {
+  mins.push({value:i});
+}
+var d = new Date();
+var hour = $('#hour').pickli({
+  orientation:'vertical',
+  labelKey: 'value',
+  data: hours,
+  size: "30px",
+  index: d.getHours(),
+  interaction: false,
+  cursor: 'default',
+  wrapperClass: 'clock'
+});
+var min = $('#min').pickli({
+  orientation:'vertical',
+  labelKey: 'value',
+  data: mins,
+  size: "30px",
+  index: d.getMinutes(),
+  interaction: false,
+  cursor: 'default',
+  wrapperClass: 'clock'
+});
+var sec = $('#sec').pickli({
+  orientation:'vertical',
+  labelKey: 'value',
+  data: mins,
+  size: "30px",
+  index: d.getSeconds(),
+  interaction: false,
+  cursor: 'default',
+  wrapperClass: 'clock'
+});
+var clock = setInterval(function() {
+  d = new Date();
+  hour.value(d.getHours());
+  min.value(d.getMinutes());
+  sec.value(d.getSeconds());
+}, 1000);</pre>
+
         <br><br>
-        <h4>Quick and Clock</h4>
         
-        <p>You can use Pickli verticaly so. Just set the orientacion option to <code>vertical</code></p>
-        
-        <ul id="hour"></ul><span>:</span><ul id="min"></ul><span>:</span><ul id="sec"></ul>
-        
-        <h6>JS</h6>
-        <pre>
-          Coming soon...
-        </pre>
-        
-        <br><br>
-        
-        <h4>Tab</h4>
+        <h3>A Tabulation Slider</h3>
         
         <p>
           You can used Pickli as a tab! It's very simple.<br>
         </p>
         
+        <div class="right">
+          <a href="#" id="firsttab">&laquo;</a>&nbsp;
+          <a href="#" id="prevtab">&lt;</a>&nbsp;
+          <a href="#" id="nexttab">&gt;</a>&nbsp;
+          <a href="#" id="lasttab">&raquo;</a>&nbsp;
+        </div>
         <ul id="tab">
             <li value="home">HOME</li>
             <li value="about">ABOUT</li>
@@ -119,54 +172,91 @@
             <li value="home" class="tab_cont_li">
                 <div class='cont'>
                     <h2>HOME</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla at euismod neque. Nulla et ultrices dolor. Duis elementum eu quam tincidunt molestie. Maecenas ut nisl lectus. Nullam posuere auctor quam eget egestas. Vestibulum nulla lectus, aliquam ac tincidunt sit amet, auctor id ipsum. Etiam at mattis arcu, eget pellentesque lectus. Aenean velit eros, laoreet eget tristique in, ornare eget velit. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Quisque condimentum nulla non eros auctor eleifend. Maecenas vel leo at mauris vulputate tempor nec sed neque.</p>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla at euismod neque. Nulla et ultrices dolor. Duis elementum eu quam tincidunt molestie. Maecenas ut nisl lectus. Nullam posuere auctor quam eget egestas.</p>
                 </div>
             </li>
             <li value="about" class="tab_cont_li">
                 <div class='cont'>
                     <h2>ABOUT</h2>
-                    <p>Lorem ipsum</p>
+                    <p>Nullam posuere auctor quam eget egestas. Vestibulum nulla lectus, aliquam ac tincidunt sit amet, auctor id ipsum. Etiam at mattis arcu, eget pellentesque lectus. Aenean velit eros.</p>
                 </div>
             </li>
             <li value="contact" class="tab_cont_li">
                 <div class='cont'>
                     <h2>CONTACT</h2>
-                    <p>Lorem ipsum</p>
+                    <p>Nullam posuere auctor quam eget egestas. Vestibulum nulla lectus, aliquam ac tincidunt sit amet, auctor id ipsum. Etiam at mattis arcu, eget pellentesque lectus. Aenean velit eros.</p>
                 </div>
             </li>
         </ul>
         
-        <a href="#" id="firsttab">&laquo;</a>&nbsp;
-        <a href="#" id="prevtab">&lt;</a>&nbsp;
-        <a href="#" id="nexttab">&gt;</a>&nbsp;
-        <a href="#" id="lasttab">&raquo;</a>&nbsp;
         
         <p>
-          We need use 2 Pickli and join them with onChange event.
+          We need use 2 Pickli and join them with <code>onChange</code> event.
         </p>
         
         <h6>JS</h6>
         <pre>
-          var tab_cont = $('#tab_cont').pickli({
-            default:'home',
-            resize: true,
-            selectClass: 'tab_page tab_page_cur',
-            unselectClass: 'tab_page',
-            interaction: false,
-            cursor:false
-          });
-          
-          var tab = $('#tab').pickli({
-            default:'home',
-            resize: true,
-            selectClass: 'tab_menu tab_menu_cur',
-            unselectClass: 'tab_menu',
-            onChange: function(e) {
-                tab_cont.value(e);
-            },
-            loop:true
-          });
-        </pre>
+var tab_cont = $('#tab_cont').pickli({
+  default:'home',
+  resize: true,
+  selectClass: 'tab_page tab_page_cur',
+  unselectClass: 'tab_page',
+  interaction: false,
+  cursor:false
+});
+
+var tab = $('#tab').pickli({
+  default:'home',
+  resize: true,
+  selectClass: 'tab_menu tab_menu_cur',
+  unselectClass: 'tab_menu',
+  onChange: function(e) {
+      tab_cont.value(e);
+  },
+  loop:true
+});</pre>
+
+
+        <p>
+          Navigation control could be configured like this:
+        </p>
+        <pre>
+$('#firsttab').on('click', function() {
+    tab.first();
+    return false;
+});
+$('#lasttab').on('click', function() {
+    tab.last();
+    return false;
+});
+
+$('#nexttab').on('click', function() {
+    tab.next();
+    return false;
+});
+$('#prevtab').on('click', function() {
+    tab.prev();
+    return false;
+});</pre>
+
+
+
+      <hr>
+      <h4>Contact</h4>
+
+      <p>Bugs, suggests and comments on <a href="https://github.com/Molosc/pickli">github project</a>.</p>
+
+
+      <h4>Licence</h4>
+
+      <p>Released under the MIT license - <a href="https://github.com/Molosc/pickli">http://opensource.org/licenses/MIT</a></p>
+
+
+
+
+      
+        
+
       </section>
     </div>
 
@@ -178,89 +268,5 @@
       </footer>
     </div>
     
-    <script type="text/javascript">
-    
-      $('#default').pickli();
-
-
-
-      var hours = [];
-      for (var i = 0 ; i < 24 ; i++) {
-        hours.push({value:i});
-      }
-      var mins = [];
-      for (var i = 0 ; i < 60 ; i++) {
-        mins.push({value:i});
-      }
-
-      var d = new Date();
-      var hour = $('#hour').pickli({
-        orientation:'vertical',
-        labelKey: 'value',
-        data: hours,
-        size: "30px",
-        index: d.getHours(),
-        interaction: false,
-        cursor: 'default',
-        wrapperClass: 'clock',
-        selectClass: 'selected'
-      });
-      var min = $('#min').pickli({
-        orientation:'vertical',
-        labelKey: 'value',
-        data: mins,
-        size: "30px",
-        index: d.getMinutes(),
-        interaction: false,
-        cursor: 'default',
-        wrapperClass: 'clock',
-        selectClass: 'selected'
-      });
-      var sec = $('#sec').pickli({
-        orientation:'vertical',
-        labelKey: 'value',
-        data: mins,
-        size: "30px",
-        index: d.getSeconds(),
-        interaction: false,
-        cursor: 'default',
-        wrapperClass: 'clock',
-        selectClass: 'selected'
-      });
-      
-      var clock = setInterval(function() {
-        d = new Date();
-        hour.value(d.getHours());
-        min.value(d.getMinutes());
-        sec.value(d.getSeconds());
-      }, 1000);
-      
-      
-      
-      
-      
-      
-      var tab_cont = $('#tab_cont').pickli({
-          default:'home',
-          resize: true,
-          selectClass: 'tab_page tab_page_cur',
-          unselectClass: 'tab_page',
-          interaction: false,
-          cursor:false
-      });
-      
-      var tab = $('#tab').pickli({
-          default:'home',
-          resize: true,
-          selectClass: 'tab_menu tab_menu_cur',
-          unselectClass: 'tab_menu',
-          onChange: function(e) {
-              tab_cont.value(e);
-          },
-          loop:true
-      });
-    </script>
-    
-
   </body>
 </html>
