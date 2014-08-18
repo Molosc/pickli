@@ -1,0 +1,62 @@
+
+/*******************************************************************************
+Pickli Styles
+*******************************************************************************/
+
+  li {
+    padding:5px;
+    margin:0px;
+  }
+  
+  li.selected {
+  	font-weight:700;
+  }
+  li.unselected {
+  	font-style: italic;
+  }
+  li.active {
+  	text-decoration:underline;
+  }
+  li.inverted {
+  	background-color: black;
+  	color: white;
+  }
+  li.tab_menu {
+  	background-color: none;
+  	color: grey;
+  
+  	-webkit-transition: color 0.5s ease-in-out;/* transition pour Chrome et Safari */
+      -moz-transition: color 0.5s ease-in-out;/* transition pour Firefox */
+      -o-transition: color 0.5s ease-in-out;/* transition pour Opéra */
+      transition: color 0.5s ease-in-out; /* all */
+  
+  	-webkit-transition: background-color 0.5s ease-in-out;/* transition pour Chrome et Safari */
+      -moz-transition: background-color 0.5s ease-in-out;/* transition pour Firefox */
+      -o-transition: background-color 0.5s ease-in-out;/* transition pour Opéra */
+      transition: background-color 0.5s ease-in-out; /* all */
+  }
+  li.tab_menu_cur {
+  	background-color: black;
+  	color: white;
+  }
+  li.tab_page {
+  	opacity: 0.2;
+  	-webkit-transition: opacity 0.5s ease-in-out;/* transition pour Chrome et Safari */
+      -moz-transition: opacity 0.5s ease-in-out;/* transition pour Firefox */
+      -o-transition: opacity 0.5s ease-in-out;/* transition pour Opéra */
+      transition: opacity 0.5s ease-in-out; /* all */
+  }
+  li.tab_page_cur {
+  	opacity: 1;
+  }
+  
+  .timeline {
+  	border-bottom: solid 1px black;
+  }
+  .cont {
+  	width: 350px;
+  	text-align: center;
+  }
+  .vertical {
+    width:100px;
+  }
