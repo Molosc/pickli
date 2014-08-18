@@ -218,7 +218,34 @@ arguments:
 
 ## Remote options
 
-Coming soon...
+### How use it ?
+
+Used for call with ajax a json data file or service.
+
+You can load data when you initialize the slider:
+```
+slider = $('#target').pickli({
+  remote: {
+    url:'http://...',
+    ...
+  }
+});
+```
+Or latter with the public method:
+```
+slider = $('#target').pickli();
+slider.remote('http://...');
+// or
+slider.remote({
+  url: 'http://...',
+  type: 'GET',
+  ...
+});
+```
+
+### Options
+
+
 
 ## Transition options
 
