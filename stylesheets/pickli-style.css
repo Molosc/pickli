@@ -15,7 +15,8 @@ Pickli Styles
   	font-style: italic;
   }
   li.active {
-  	text-decoration:underline;
+  	/* text-decoration:underline; */
+  	font-weight:700;
   }
   li.inverted {
   	background-color: black;
