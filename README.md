@@ -16,7 +16,6 @@ jQuery Plug-in - Carousel Picker for li tags
 
 See exemples at http://molosc.github.io/pickli
 
-
 Written by: R. Romain - http://molosc.com
 
 
@@ -64,10 +63,10 @@ $(document).ready(function(){
 });
 ```
 
-## Important note:
+#### That's all !
 
-- On **horizontal** orientation, `<li>` will be set with  `display: inline-block;` CSS value.
-- On **vertical** orientation, `<li>` will be set with `display: block;` CSS value.
+But you can configure Pickli a lot.
+See exemples at http://molosc.github.io/pickli
 
 
 # Configuration options
