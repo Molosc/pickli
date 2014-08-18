@@ -192,15 +192,13 @@
         mins.push({value:i});
       }
 
+      var d = new Date();
       var hour = $('#hour').pickli({
         orientation:'vertical',
         labelKey: 'value',
         data: hours,
         size: "30px",
-        orientation: 'vertical',
-        index: 12,
-        selectClass: 'selected',
-        unselectClass: 'unselected',
+        index: d.getHours(),
         wrapperClass: 'clock'
       });
       var min = $('#min').pickli({
@@ -208,10 +206,7 @@
         labelKey: 'value',
         data: mins,
         size: "30px",
-        orientation: 'vertical',
-        index: 0,
-        selectClass: 'selected',
-        unselectClass: 'unselected',
+        index: d.getMinutes(),
         wrapperClass: 'clock'
       });
       var sec = $('#sec').pickli({
@@ -219,15 +214,12 @@
         labelKey: 'value',
         data: mins,
         size: "30px",
-        orientation: 'vertical',
-        index: 0,
-        selectClass: 'selected',
-        unselectClass: 'unselected',
+        index: d.getSeconds(),
         wrapperClass: 'clock'
       });
       
       var clock = setInterval(function() {
-        var d = new Date();
+        d = new Date();
         hour.value(d.getHours());
         min.value(d.getMinutes());
         sec.value(d.getSeconds());
