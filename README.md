@@ -34,10 +34,10 @@ First and most important, the jQuery library needs to be included. Next, downloa
 
 ```js
 <!-- jQuery library -->
-<script src="http://code.jquery.com/jquery.min.js" />
+<script src="http://code.jquery.com/jquery.min.js"></script>
 
 <!-- Pickli Javascript file -->
-<script src="jquery.pickli.min.js" />
+<script src="jquery.pickli.min.js"></script>
 ```
 
 ## Step 2: Create HTML markup
