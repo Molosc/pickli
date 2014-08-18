@@ -3,6 +3,8 @@ Pickli
 
 jQuery Plug-in - Carousel Picker for li tags
 
+See exemples at http://molosc.github.io/pickli
+
 # Features
 - Carousel Picker for list.
 - Horizontal or vertical orientation.
@@ -14,7 +16,6 @@ jQuery Plug-in - Carousel Picker for li tags
 - Interactivity with custom events and cursor.
 - Animated change with custom transitions.
 
-See exemples at http://molosc.github.io/pickli
 
 Written by: R. Romain - http://molosc.com
 
