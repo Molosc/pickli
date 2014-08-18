@@ -27,8 +27,8 @@
             data: null,
             loader: null,
             crossDomain: false,
-            onRemoteStart: null,,
-            onRemoteSuccess: null
+            onRemoteStart: null,
+            onRemoteSuccess: null,
             onRemoteError: null
         },
 
@@ -179,7 +179,7 @@
 		var remote = function(){
 			if (pickli.settings.remote && pickli.settings.remote.url) {
 				if (pickli.settings.remote.loader) pickli.settings.remote.loader.show();
-				if (pickli.settings.remote.onRemoteError) pickli.settings.remote.onRemoteStart(); 
+				if (pickli.settings.remote.onRemoteStart) pickli.settings.remote.onRemoteStart(); 
 				$.ajax({
 					url: pickli.settings.remote.url,
 					type: pickli.settings.remote.type,
