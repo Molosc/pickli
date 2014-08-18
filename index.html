@@ -57,6 +57,52 @@
         <code>
           $('#default').pickli();
         </code>
+        
+        
+        <h4>Tab selector</h4>
+        
+        <p>
+          You can used Pickli as a tab! It's very simple.<br>
+        </p>
+        
+        <ul id="tab">
+            <li value="home">HOME</li>
+            <li value="about">ABOUT</li>
+            <li value="contact">CONTACT</li>
+        </ul>
+        <ul id="tab_cont">
+            <li value="home" class="tab_cont_li">
+                <div class='cont'>
+                    <h2>HOME</h2>
+                    <p>Lorem ipsum</p>
+                </div>
+            </li>
+            <li value="about" class="tab_cont_li">
+                <div class='cont'>
+                    <h2>ABOUT</h2>
+                    <p>Lorem ipsum</p>
+                </div>
+            </li>
+            <li value="contact" class="tab_cont_li">
+                <div class='cont'>
+                    <h2>CONTACT</h2>
+                    <p>Lorem ipsum</p>
+                </div>
+            </li>
+        </ul>
+        <a href="#" id="firsttab"><<<a>&nbsp;
+        <a href="#" id="prevtab"><<a>&nbsp;
+        <a href="#" id="nexttab">><a>&nbsp;
+        <a href="#" id="lasttab">>><a>&nbsp;
+        
+        <p>
+          We need use 2 Pickli list as join them with onChange event.
+        </p>
+        
+        <h6>JS</h6>
+        <code>
+          $('#default').pickli();
+        </code>
       </section>
     </div>
 
@@ -72,6 +118,29 @@
       $('#default').pickli();
     </script>
 
+
+      
+    <script type="text/javascript">
+      var tab_cont = $('#tab_cont').pickli({
+          default:'home',
+          resize: true,
+          selectClass: 'tab_page tab_page_cur',
+          unselectClass: 'tab_page',
+          interaction: false,
+          cursor:false
+      });
+      
+      var tab = $('#tab').pickli({
+          default:'home',
+          resize: true,
+          selectClass: 'tab_menu tab_menu_cur',
+          unselectClass: 'tab_menu',
+          onChange: function(e) {
+              tab_cont.value(e);
+          },
+          loop:true
+      });
+    </script>
     
 
   </body>
