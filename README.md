@@ -66,8 +66,8 @@ $(document).ready(function(){
 
 ## Important note:
 
-- On **horizontal** orientation, `<li>` must take  `display: inline-block;` CSS value.
-- On **vertical** orientation, `<li>` must take `display: block;` CSS value.
+- On **horizontal** orientation, `<li>` will be set with  `display: inline-block;` CSS value.
+- On **vertical** orientation, `<li>` will be set with `display: block;` CSS value.
 
 
 # Configuration options
