@@ -186,19 +186,51 @@
 
       var hours = [];
       for (var i = 0 ; i < 24 ; i++) {
-        hours.push({label:i+':00', value:i});
+        hours.push({value:i});
+      }
+      var mins = [];
+      for (var i = 0 ; i < 60 ; i++) {
+        mins.push({value:i});
       }
 
-      $('#vertical').pickli({
+      var hour = $('#hour').pickli({
         orientation:'vertical',
+        labelKey: 'value',
         data: hours,
         size: "200px",
         orientation: 'vertical',
         index: 12,
-        selectClass: 'vertical tab_menu tab_menu_cur',
-        unselectClass: 'vertical tab_menu',
+        selectClass: 'selected',
+        unselectClass: 'unselected',
         wrapperClass: 'vertical'
       });
+      var min = $('#min').pickli({
+        orientation:'vertical',
+        data: mins,
+        size: "200px",
+        orientation: 'vertical',
+        index: 0,
+        selectClass: 'selected',
+        unselectClass: 'unselected',
+        wrapperClass: 'vertical'
+      });
+      var sec = $('#sec').pickli({
+        orientation:'vertical',
+        data: mins,
+        size: "200px",
+        orientation: 'vertical',
+        index: 0,
+        selectClass: 'selected',
+        unselectClass: 'unselected',
+        wrapperClass: 'vertical'
+      });
+      
+      
+      
+      
+      
+      
+      
       
       var tab_cont = $('#tab_cont').pickli({
           default:'home',
