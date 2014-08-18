@@ -215,7 +215,8 @@
         data: hours,
         size: "30px",
         index: d.getHours(),
-        wrapperClass: 'clock'
+        wrapperClass: 'clock',
+        selectedClass: ''
       });
       var min = $('#min').pickli({
         orientation:'vertical',
@@ -223,7 +224,8 @@
         data: mins,
         size: "30px",
         index: d.getMinutes(),
-        wrapperClass: 'clock'
+        wrapperClass: 'clock',
+        selectedClass: ''
       });
       var sec = $('#sec').pickli({
         orientation:'vertical',
@@ -231,7 +233,8 @@
         data: mins,
         size: "30px",
         index: d.getSeconds(),
-        wrapperClass: 'clock'
+        wrapperClass: 'clock',
+        selectedClass: ''
       });
       
       var clock = setInterval(function() {
