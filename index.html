@@ -58,6 +58,7 @@
           $('#default').pickli();
         </code>
         
+        <br><br>
         
         <h4>Tab selector</h4>
         
@@ -90,10 +91,11 @@
                 </div>
             </li>
         </ul>
-        <a href="#" id="firsttab"><<<a>&nbsp;
-        <a href="#" id="prevtab"><<a>&nbsp;
-        <a href="#" id="nexttab">><a>&nbsp;
-        <a href="#" id="lasttab">>><a>&nbsp;
+        
+        <a href="#" id="firsttab">&laquo;<a>&nbsp;
+        <a href="#" id="prevtab">&lt;<a>&nbsp;
+        <a href="#" id="nexttab">&gt;<a>&nbsp;
+        <a href="#" id="lasttab">&raquo;<a>&nbsp;
         
         <p>
           We need use 2 Pickli list as join them with onChange event.
@@ -101,7 +103,25 @@
         
         <h6>JS</h6>
         <code>
-          $('#default').pickli();
+          var tab_cont = $('#tab_cont').pickli({
+            default:'home',
+            resize: true,
+            selectClass: 'tab_page tab_page_cur',
+            unselectClass: 'tab_page',
+            interaction: false,
+            cursor:false
+          });
+          
+          var tab = $('#tab').pickli({
+            default:'home',
+            resize: true,
+            selectClass: 'tab_menu tab_menu_cur',
+            unselectClass: 'tab_menu',
+            onChange: function(e) {
+                tab_cont.value(e);
+            },
+            loop:true
+          });
         </code>
       </section>
     </div>
