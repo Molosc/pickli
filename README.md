@@ -47,7 +47,7 @@ Create a `<ul>` element, with a `<li>` for each item. An item can contain any HT
 
 ```
 <ul>
-  <li value="1">Item 1></li>
+  <li value="1">Item 1</li>
   <li value="2">Item 2</li>
   <li value="3">Item 3</li>
   <li value="4">Item 4</li>
