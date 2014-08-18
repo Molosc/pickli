@@ -262,7 +262,7 @@ default: null
 options: string or object or array
 ```
 
-**crooDomsin** If you wish to force a crossDomain request on the same domain.
+**crossDomain** If you wish to force a crossDomain request on the same domain.
 ```
 default: false
 options: boolean
